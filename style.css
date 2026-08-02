@@ -1,0 +1,87 @@
+/*
+ * Une seule feuille pour tout le site. Elle reprend la palette du jeu — violet de
+ * plateau, or de valeur, crème de texte — sans chercher à imiter son relief : une page
+ * web qui singe une interface de jeu vieillit mal, et se lit moins bien.
+ */
+:root {
+  --fond: #150523;
+  --fond-carte: #24093E;
+  --bordure: #FFFFFF14;
+  --creme: #F5EDE0;
+  --creme-attenue: #C9B8DE;
+  --discret: #9A85B8;
+  --or: #FFC53D;
+  --violet: #9B6BFF;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--creme);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page { max-width: 52rem; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+
+a { color: var(--or); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .4rem; }
+h2 { font-size: 1.2rem; margin: 2.75rem 0 .75rem; }
+p { margin: 0 0 1rem; }
+
+.surtitre {
+  font-size: .75rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--discret); margin: 0 0 .5rem;
+}
+.discret { color: var(--creme-attenue); }
+.mention { color: var(--discret); font-size: .875rem; }
+
+/* ── L'en-tête d'application : icône à gauche, identité à droite ─────────── */
+.entete { display: flex; gap: 1.25rem; align-items: center; margin-bottom: 2rem; }
+.entete img { width: 88px; height: 88px; border-radius: 20px; flex-shrink: 0; }
+
+/* ── La grille d'applications de la page d'accueil ───────────────────────── */
+.apps { display: grid; gap: 1rem; grid-template-columns: 1fr; padding: 0; margin: 0; list-style: none; }
+@media (min-width: 34rem) { .apps { grid-template-columns: 1fr 1fr; } }
+
+.app {
+  display: flex; gap: 1rem; align-items: center;
+  background: var(--fond-carte); border: 1px solid var(--bordure);
+  border-radius: 16px; padding: 1rem 1.15rem;
+  color: inherit; text-decoration: none;
+  transition: border-color .15s ease;
+}
+.app:hover { border-color: #FFC53D66; text-decoration: none; }
+.app img { width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0; }
+.app strong { display: block; font-weight: 600; font-size: 1rem; }
+.app span { display: block; font-size: .875rem; color: var(--creme-attenue); }
+
+/* ── Les captures d'écran, en bande qui défile sur mobile ────────────────── */
+.captures {
+  display: flex; gap: 14px; overflow-x: auto; padding: .25rem 0 1rem;
+  scroll-snap-type: x mandatory;
+}
+.captures img {
+  width: 210px; border-radius: 14px; border: 1px solid var(--bordure);
+  flex-shrink: 0; scroll-snap-align: start;
+}
+
+/* ── Le bouton Play ──────────────────────────────────────────────────────── */
+.cta {
+  display: inline-block; background: var(--or); color: #3B1A00;
+  font-weight: 600; padding: .7rem 1.4rem; border-radius: 12px;
+}
+.cta:hover { text-decoration: none; filter: brightness(1.06); }
+
+.liste-fine { padding-left: 1.1rem; }
+.liste-fine li { margin: .35rem 0; }
+
+footer {
+  margin-top: 3.5rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--bordure);
+}
