@@ -1,6 +1,9 @@
 # qLag.github.io
 
-Le site développeur racine, servi sur `https://qlag.github.io/`.
+Le site développeur racine, servi sur **https://qlag-apps.fr**.
+
+Le fichier `CNAME` porte le domaine : le supprimer ferait retomber le site sur
+`qlag.github.io` et casserait l'URL déclarée dans la Play Console.
 
 Il existe pour une raison précise : **AdMob cherche `app-ads.txt` à la racine du
 domaine déclaré comme site web sur la fiche Play**, jamais dans un sous-dossier. Le
