@@ -1,25 +1,40 @@
 /*
- * Une seule feuille pour tout le site. Elle reprend la palette du jeu — violet de
- * plateau, or de valeur, crème de texte — sans chercher à imiter son relief : une page
- * web qui singe une interface de jeu vieillit mal, et se lit moins bien.
+ * Une seule feuille pour tout le site.
+ *
+ * Le socle est **neutre** : un graphite, et non plus le violet de « Quelle est la
+ * marque ? ». Une vitrine qui porte la couleur d'un seul de ses jeux fait paraître les
+ * autres invités chez lui — et il faudrait la repeindre à chaque nouveau titre. Chaque
+ * page d'application pose donc sa propre teinte par la variable `--accent`, le socle ne
+ * bouge plus.
+ *
+ * Neutre ne veut pas dire terne : le fond est un dégradé radial qui monte vers le haut de
+ * la page, comme une lumière rasante. C'est ce qui empêche un aplat sombre de faire mur.
  */
 :root {
-  --fond: #150523;
-  --fond-carte: #24093E;
+  --fond: #0E0F12;
+  --fond-haut: #1B1F27;
+  --fond-carte: #16181D;
+  --fond-carte-clair: #1D2027;
   --bordure: #FFFFFF14;
-  --creme: #F5EDE0;
-  --creme-attenue: #C9B8DE;
-  --discret: #9A85B8;
-  --or: #FFC53D;
-  --violet: #9B6BFF;
+  --bordure-vive: #FFFFFF26;
+  --texte: #F2F3F5;
+  --texte-attenue: #A8ADB8;
+  --discret: #7C828E;
+
+  /* L'or de la famille. Chaque page d'application peut le remplacer. */
+  --accent: #FFC53D;
+  --accent-encre: #2A1C00;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--fond);
-  color: var(--creme);
+  color: var(--texte);
+  background:
+    radial-gradient(1200px 640px at 50% -12%, var(--fond-haut) 0%, transparent 62%),
+    var(--fond);
+  background-attachment: fixed;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
@@ -27,39 +42,87 @@ body {
 
 .page { max-width: 52rem; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
 
-a { color: var(--or); text-decoration: none; }
+a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .4rem; }
-h2 { font-size: 1.2rem; margin: 2.75rem 0 .75rem; }
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .4rem; letter-spacing: -.015em; }
+h2 { font-size: 1.2rem; margin: 2.75rem 0 .75rem; letter-spacing: -.01em; }
 p { margin: 0 0 1rem; }
 
 .surtitre {
   font-size: .75rem; letter-spacing: .18em; text-transform: uppercase;
   color: var(--discret); margin: 0 0 .5rem;
 }
-.discret { color: var(--creme-attenue); }
+.discret { color: var(--texte-attenue); }
 .mention { color: var(--discret); font-size: .875rem; }
 
 /* ── L'en-tête d'application : icône à gauche, identité à droite ─────────── */
 .entete { display: flex; gap: 1.25rem; align-items: center; margin-bottom: 2rem; }
-.entete img { width: 88px; height: 88px; border-radius: 20px; flex-shrink: 0; }
+.entete img {
+  width: 88px; height: 88px; border-radius: 20px; flex-shrink: 0;
+  box-shadow: 0 10px 28px #0008;
+}
 
-/* ── La grille d'applications de la page d'accueil ───────────────────────── */
-.apps { display: grid; gap: 1rem; grid-template-columns: 1fr; padding: 0; margin: 0; list-style: none; }
-@media (min-width: 34rem) { .apps { grid-template-columns: 1fr 1fr; } }
+/* ── La vitrine : une mise en avant, puis la liste ─────────────────────────
+ *
+ * La carte en avant porte la bannière du jeu et lui donne la place d'exister ; les
+ * suivantes sont des lignes régulières. C'est la hiérarchie d'une page de magasin : une
+ * chose qu'on montre, un catalogue en dessous.
+ */
+.avant {
+  display: block; margin: 0 0 1rem;
+  background: var(--fond-carte); border: 1px solid var(--bordure);
+  border-radius: 20px; overflow: hidden;
+  color: inherit; text-decoration: none;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.avant:hover {
+  text-decoration: none; transform: translateY(-2px);
+  border-color: var(--bordure-vive); box-shadow: 0 14px 34px #0007;
+}
+.avant img { display: block; width: 100%; aspect-ratio: 1024 / 500; object-fit: cover; }
+.avant .texte { padding: 1.1rem 1.25rem 1.25rem; }
+.avant .etiquette {
+  font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent); margin: 0 0 .3rem;
+}
+.avant strong { display: block; font-size: 1.25rem; font-weight: 600; letter-spacing: -.01em; }
+.avant .accroche { display: block; font-size: .95rem; color: var(--texte-attenue); margin-top: .15rem; }
+
+.apps { display: grid; gap: .75rem; grid-template-columns: 1fr; padding: 0; margin: 0; list-style: none; }
 
 .app {
   display: flex; gap: 1rem; align-items: center;
   background: var(--fond-carte); border: 1px solid var(--bordure);
-  border-radius: 16px; padding: 1rem 1.15rem;
+  border-radius: 18px; padding: .9rem 1.1rem;
   color: inherit; text-decoration: none;
-  transition: border-color .15s ease;
+  transition: background .18s ease, border-color .18s ease;
 }
-.app:hover { border-color: #FFC53D66; text-decoration: none; }
-.app img { width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0; }
+.app:hover { text-decoration: none; background: var(--fond-carte-clair); border-color: var(--bordure-vive); }
+.app img { width: 60px; height: 60px; border-radius: 15px; flex-shrink: 0; }
+.app .nom { flex: 1; min-width: 0; }
 .app strong { display: block; font-weight: 600; font-size: 1rem; }
-.app span { display: block; font-size: .875rem; color: var(--creme-attenue); }
+.app .accroche { display: block; font-size: .875rem; color: var(--texte-attenue); }
+
+/*
+ * Sur un écran étroit, l'icône et la pastille laissaient trop peu de place au nom : le
+ * titre passait à la ligne et l'accroche se faisait couper. On resserre les deux plutôt
+ * que de sacrifier le texte, qui est ce qu'on vient lire.
+ */
+@media (max-width: 26rem) {
+  .app { gap: .75rem; padding: .8rem .9rem; }
+  .app img { width: 50px; height: 50px; border-radius: 13px; }
+  .app strong { font-size: .95rem; }
+  .app .accroche { font-size: .8rem; }
+  .app .voir { font-size: .75rem; padding: .3rem .7rem; }
+}
+
+/* La pastille « Voir » : elle dit que la ligne est une porte, pas un simple libellé. */
+.app .voir {
+  flex-shrink: 0; font-size: .8rem; font-weight: 600;
+  color: var(--accent); background: #FFFFFF0F;
+  padding: .35rem .85rem; border-radius: 999px;
+}
 
 /* ── Les captures d'écran, en bande qui défile sur mobile ────────────────── */
 .captures {
@@ -73,7 +136,7 @@ p { margin: 0 0 1rem; }
 
 /* ── Le bouton Play ──────────────────────────────────────────────────────── */
 .cta {
-  display: inline-block; background: var(--or); color: #3B1A00;
+  display: inline-block; background: var(--accent); color: var(--accent-encre);
   font-weight: 600; padding: .7rem 1.4rem; border-radius: 12px;
 }
 .cta:hover { text-decoration: none; filter: brightness(1.06); }
